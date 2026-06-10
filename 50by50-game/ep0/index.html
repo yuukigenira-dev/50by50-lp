@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>50by50 — Episode 0 Prototype</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@400;500&family=Cormorant+Garamond:ital@0;1&family=Zen+Kaku+Gothic+New:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- ===== Title ===== -->
+<div class="screen screen-title is-active" id="screenTitle">
+  <div class="title-bg" style="background-image:url('assets/bg-title.webp')"></div>
+  <div class="title-inner">
+    <img class="title-logo" src="assets/logo.png" alt="50by50">
+    <p class="title-copy">隣り合わせの、非対称。</p>
+    <p class="title-sub">Episode&nbsp;0&nbsp;—&nbsp;Prototype</p>
+    <button class="btn-start" id="btnStart">はじめる</button>
+    <p class="title-note">※ 台詞はすべて仮テキストです</p>
+  </div>
+</div>
+
+<!-- ===== Game ===== -->
+<div class="screen screen-game" id="screenGame">
+  <div class="game-bg" id="gameBg"></div>
+
+  <!-- 50:50 gauge -->
+  <div class="gauge-wrap" aria-hidden="true">
+    <span class="g-label">MISSION</span>
+    <div class="g-bar"><i class="g-marker" id="gMarker"></i></div>
+    <span class="g-label">EMOTION</span>
+  </div>
+
+  <!-- sprites -->
+  <div class="stage">
+    <img class="sprite sprite-l" id="spriteL" src="assets/sprite-shade.webp" alt="">
+    <img class="sprite sprite-r" id="spriteR" src="assets/sprite-echo.webp" alt="">
+  </div>
+
+  <!-- dialogue -->
+  <div class="dlg" id="dlgBox">
+    <div class="dlg-head">
+      <img class="dlg-face" id="dlgFace" src="assets/expr/shade-neutral.webp" alt="">
+      <span class="dlg-name" id="dlgName"></span>
+    </div>
+    <p class="dlg-text" id="dlgText"></p>
+    <span class="dlg-next" id="dlgNext">▼</span>
+  </div>
+
+  <!-- choices -->
+  <div class="choices" id="choices"></div>
+
+  <button class="btn-skip" id="btnSkip" aria-label="プロトタイプを最初に戻す">RESET</button>
+</div>
+
+<!-- ===== End ===== -->
+<div class="screen screen-end" id="screenEnd">
+  <div class="title-bg" style="background-image:url('assets/bg-title.webp')"></div>
+  <div class="end-inner">
+    <p class="end-copy">運命だけが、ふたりを敵と呼ぶ。</p>
+    <p class="end-sub">Episode&nbsp;0&nbsp;—&nbsp;to&nbsp;be&nbsp;continued</p>
+    <div class="end-gauge" id="endGauge"></div>
+    <button class="btn-start" id="btnRestart">もう一度</button>
+    <p class="title-note">完成版では、ここからLP・TikTokへの導線が入ります</p>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>

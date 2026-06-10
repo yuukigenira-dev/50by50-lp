@@ -1,0 +1,266 @@
+/* 50by50 Episode 0 Prototype — トンマナ準拠UI */
+:root {
+  --logo-dark: #332763;
+  --base: #F6F4F1;
+  --dark-1: #1E1B2E;
+  --dark-2: #252135;
+  --sub-1: #CFC9E2;
+  --sub-2: #C4BEDD;
+  --accent: #9D8FE6;
+  --accent-soft: #A89CDB;
+  --font-display: "Shippori Mincho B1", serif;
+  --font-en: "Cormorant Garamond", serif;
+  --font-ui: "Zen Kaku Gothic New", sans-serif;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html,body { height:100%; overflow:hidden; }
+body {
+  background: var(--dark-1);
+  font-family: var(--font-display);
+  color: var(--dark-1);
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.screen {
+  position: fixed; inset: 0;
+  display: none;
+}
+.screen.is-active { display: block; }
+
+/* ===== Title / End ===== */
+.title-bg {
+  position:absolute; inset:0;
+  background-size: cover;
+  background-position: center;
+}
+.title-bg::after {
+  content:""; position:absolute; inset:0;
+  background: linear-gradient(180deg,
+    color-mix(in srgb, var(--base) 20%, transparent),
+    color-mix(in srgb, var(--base) 72%, transparent) 78%);
+}
+.title-inner, .end-inner {
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 28px 64px;
+  text-align: center;
+}
+.title-logo { width: min(200px, 52vw); margin-bottom: 22px; }
+.title-copy {
+  font-size: 19px;
+  letter-spacing: 0.16em;
+  color: var(--dark-1);
+  margin-bottom: 8px;
+}
+.title-sub, .end-sub {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--logo-dark);
+  margin-bottom: 34px;
+}
+.btn-start {
+  font-family: var(--font-ui);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  color: var(--base);
+  background: var(--logo-dark);
+  border: none;
+  padding: 15px 52px;
+  cursor: pointer;
+}
+.btn-start:active { opacity: .85; }
+.title-note {
+  margin-top: 22px;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  color: var(--dark-2);
+}
+.end-copy {
+  font-size: 18px;
+  letter-spacing: 0.18em;
+  margin-bottom: 10px;
+}
+.end-gauge {
+  font-family: var(--font-en);
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--logo-dark);
+  margin-bottom: 30px;
+}
+
+/* ===== Game ===== */
+.game-bg {
+  position:absolute; inset:0;
+  background-size: cover;
+  background-position: center;
+  transition: opacity .6s ease;
+}
+.game-bg::after {
+  content:""; position:absolute; inset:0;
+  background: color-mix(in srgb, var(--base) 18%, transparent);
+}
+
+/* gauge */
+.gauge-wrap {
+  position: absolute;
+  top: calc(12px + env(safe-area-inset-top));
+  left: 18px; right: 18px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.g-label {
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--logo-dark);
+  text-shadow: 0 0 6px var(--base);
+}
+.g-bar {
+  flex: 1;
+  height: 2px;
+  background: color-mix(in srgb, var(--sub-2) 80%, transparent);
+  position: relative;
+}
+.g-marker {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 9px; height: 9px;
+  background: var(--accent);
+  transform: translate(-50%,-50%) rotate(45deg);
+  transition: left .7s cubic-bezier(.5,0,.2,1);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+
+/* sprites */
+.stage {
+  position: absolute;
+  inset: 0 0 26vh 0;
+  overflow: hidden;
+}
+.sprite {
+  position: absolute;
+  bottom: -4vh;
+  height: 86%;
+  object-fit: contain;
+  transition: opacity .45s ease, filter .45s ease, transform .45s ease;
+  opacity: 0;
+}
+.sprite.is-on { opacity: 1; }
+.sprite.is-dim { filter: brightness(.78) saturate(.85); transform: scale(.985); }
+.sprite-l { left: -14%; }
+.sprite-r { right: -14%; }
+@media (min-width: 700px) {
+  .sprite-l { left: 4%; }
+  .sprite-r { right: 4%; }
+}
+
+/* dialogue */
+.dlg {
+  position: absolute;
+  left: 12px; right: 12px;
+  bottom: calc(14px + env(safe-area-inset-bottom));
+  z-index: 6;
+  min-height: 24vh;
+  background: color-mix(in srgb, var(--base) 82%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--sub-1) 80%, transparent);
+  padding: 14px 18px 18px;
+  cursor: pointer;
+}
+.dlg-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+  min-height: 40px;
+}
+.dlg-face {
+  width: 40px; height: 40px;
+  object-fit: cover;
+  border: 1px solid var(--sub-2);
+  display: none;
+}
+.dlg-face.is-on { display: block; }
+.dlg-name {
+  font-size: 13px;
+  letter-spacing: 0.2em;
+  color: var(--logo-dark);
+}
+.dlg-text {
+  font-size: 15px;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  color: var(--dark-1);
+  min-height: 3.6em;
+}
+.dlg-next {
+  position: absolute;
+  right: 14px; bottom: 10px;
+  font-size: 10px;
+  color: var(--accent);
+  animation: blink 1.4s ease-in-out infinite;
+  opacity: 0;
+}
+.dlg-next.is-on { opacity: 1; }
+@keyframes blink { 50% { opacity: .25; } }
+
+/* choices */
+.choices {
+  position: absolute;
+  left: 24px; right: 24px;
+  bottom: 32vh;
+  z-index: 7;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+}
+.choices.is-on { display: flex; }
+.choice-btn {
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: var(--dark-1);
+  background: color-mix(in srgb, var(--base) 86%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--sub-2);
+  padding: 15px 18px;
+  cursor: pointer;
+  transition: border-color .25s ease;
+}
+.choice-btn:hover, .choice-btn:active {
+  border-color: var(--accent);
+  color: var(--logo-dark);
+}
+
+.btn-skip {
+  position: absolute;
+  top: calc(34px + env(safe-area-inset-top));
+  right: 18px;
+  z-index: 5;
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--dark-2);
+  background: transparent;
+  border: 1px solid color-mix(in srgb, var(--sub-2) 70%, transparent);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sprite, .game-bg, .g-marker { transition: none; }
+  .dlg-next { animation: none; }
+}
