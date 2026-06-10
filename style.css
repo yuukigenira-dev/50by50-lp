@@ -1,0 +1,502 @@
+/* ==========================================================
+   50by50 LP — style.css
+   確定パレット（13_カラーパレット準拠）
+   面は淡く、点で締める。Accentは画面の5〜10%。純黒禁止。
+   ========================================================== */
+:root {
+  --logo-dark: #332763;
+  --base: #F6F4F1;
+  --base-alt: #F2F0EC;
+  --dark-1: #1E1B2E;
+  --dark-2: #252135;
+  --dark-3: #2C2740;
+  --sub-1: #CFC9E2;
+  --sub-2: #C4BEDD;
+  --accent-rui: #9D8FE6;
+  --accent-soft: #A89CDB;
+
+  --font-display: "Shippori Mincho B1", "Noto Serif JP", serif;
+  --font-en: "Cormorant Garamond", serif;
+  --font-ui: "Zen Kaku Gothic New", sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--base);
+  color: var(--dark-1);
+  font-family: var(--font-display);
+  font-weight: 400;
+  line-height: 2;
+  letter-spacing: 0.06em;
+  font-size: 15px;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; text-decoration: none; }
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--accent-rui);
+  outline-offset: 3px;
+}
+
+/* ===== Header ===== */
+.site-header {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 20px;
+  background: color-mix(in srgb, var(--base) 82%, transparent);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid color-mix(in srgb, var(--sub-1) 50%, transparent);
+  transition: padding .3s ease;
+}
+.header-logo img { height: 26px; width: auto; }
+.header-nav { display: flex; gap: 18px; }
+.header-nav a {
+  font-family: var(--font-en);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--dark-2);
+}
+.header-nav a:hover { color: var(--accent-rui); }
+@media (max-width: 480px) {
+  .header-nav { gap: 12px; }
+  .header-nav a { font-size: 11px; letter-spacing: 0.12em; }
+}
+
+/* ===== Hero ===== */
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  text-align: center;
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  z-index: 0;
+}
+.hero-bg video {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  opacity: 0.3; /* 規定: 0.25〜0.35 */
+}
+.hero-veil {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 90% 60% at 70% 20%, color-mix(in srgb, var(--sub-1) 45%, transparent), transparent 70%),
+    radial-gradient(ellipse 80% 55% at 25% 85%, color-mix(in srgb, var(--sub-2) 40%, transparent), transparent 70%),
+    linear-gradient(180deg, color-mix(in srgb, var(--base) 30%, transparent), color-mix(in srgb, var(--base) 65%, transparent));
+}
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 96px 24px 64px;
+  max-width: 560px;
+}
+.hero-eyebrow {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.42em;
+  color: var(--accent-soft);
+  margin-bottom: 28px;
+}
+.hero-logo img {
+  width: min(260px, 64vw);
+  margin: 0 auto 36px;
+}
+.hero-concept {
+  font-size: clamp(22px, 6vw, 30px);
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  margin-bottom: 22px;
+}
+.hero-formula {
+  font-family: var(--font-en);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--dark-3);
+  margin-bottom: 26px;
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  align-items: baseline;
+}
+.hero-formula span { font-family: var(--font-display); font-size: 15px; }
+.hero-formula i { font-style: normal; color: var(--accent-rui); font-size: 11px; }
+.hero-emotion {
+  font-size: 15px;
+  letter-spacing: 0.16em;
+  color: var(--dark-2);
+  margin-bottom: 40px;
+}
+.hero-genre {
+  display: inline-block;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--logo-dark);
+  border-top: 1px solid var(--sub-2);
+  border-bottom: 1px solid var(--sub-2);
+  padding: 10px 22px;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 26px; left: 50%;
+  transform: translateX(-50%) rotate(24deg); /* 斜線=ロゴの╱に対応 */
+  z-index: 1;
+}
+.hero-scroll-line {
+  display: block;
+  width: 1px; height: 52px;
+  background: linear-gradient(var(--accent-rui), transparent);
+  animation: drop 2.4s ease-in-out infinite;
+}
+@keyframes drop {
+  0% { transform: scaleY(0); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: top; }
+  56% { transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ===== Sections common ===== */
+.section {
+  padding: 88px 24px;
+  max-width: 720px;
+  margin: 0 auto;
+}
+.section-head { margin-bottom: 44px; }
+.eyebrow {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  color: var(--accent-soft);
+  margin-bottom: 14px;
+}
+.section-head h2 {
+  font-size: clamp(20px, 5.4vw, 26px);
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  line-height: 1.8;
+}
+.section-lead {
+  margin-top: 16px;
+  font-size: 14px;
+  color: var(--dark-3);
+  letter-spacing: 0.1em;
+}
+
+/* fade-in */
+.fade {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+.fade.is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade { opacity: 1; transform: none; transition: none; }
+  .hero-scroll-line { animation: none; }
+}
+
+/* ===== Characters ===== */
+.characters { max-width: 860px; }
+.char-stage {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 56px;
+}
+.char-card figure {
+  background: var(--base-alt);
+  border: 1px solid color-mix(in srgb, var(--sub-1) 60%, transparent);
+  overflow: hidden;
+}
+.char-card img { width: 100%; aspect-ratio: 2/3; object-fit: cover; }
+
+/* タップで通常⇄戦闘/潜入を切り替え */
+.char-toggle {
+  position: relative;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.char-toggle .img-alt {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .55s ease;
+}
+.char-toggle.show-alt .img-alt { opacity: 1; }
+.tap-badge {
+  position: absolute;
+  right: 10px; bottom: 10px;
+  font-family: var(--font-en);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--logo-dark);
+  background: color-mix(in srgb, var(--base) 78%, transparent);
+  backdrop-filter: blur(4px);
+  border: 1px solid color-mix(in srgb, var(--sub-2) 80%, transparent);
+  padding: 5px 10px;
+  pointer-events: none;
+}
+.char-toggle.show-alt .tap-badge { color: var(--accent-rui); }
+
+.relationship-fig {
+  margin: 56px auto 0;
+  max-width: 480px;
+  border: 1px solid color-mix(in srgb, var(--sub-1) 60%, transparent);
+}
+.relationship-fig img { width: 100%; }
+.char-meta { padding: 18px 4px 0; }
+.char-code {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--accent-rui);
+}
+.char-h { color: var(--sub-2); letter-spacing: 0.18em; }
+.char-meta h3 {
+  font-size: 19px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  margin: 8px 0 12px;
+}
+.char-desc { font-size: 13.5px; line-height: 2.1; color: var(--dark-2); }
+
+/* 隣り合わせの非対称: 段差配置 */
+.char-slash { display: none; }
+@media (min-width: 640px) {
+  .char-stage {
+    grid-template-columns: 1fr 56px 1fr;
+    align-items: start;
+    gap: 0;
+  }
+  .char-shade { margin-top: 0; padding-right: 6px; }
+  .char-echo  { margin-top: 88px; padding-left: 6px; } /* 段差=非対称 */
+  .char-slash {
+    display: block;
+    position: relative;
+    height: 100%;
+    min-height: 420px;
+  }
+  .char-slash span {
+    position: absolute;
+    top: 6%; bottom: 6%;
+    left: 50%;
+    width: 1px;
+    background: linear-gradient(transparent, var(--accent-rui), transparent);
+    transform: rotate(18deg); /* ロゴの斜線 */
+  }
+}
+.char-note {
+  margin-top: 56px;
+  text-align: center;
+  font-size: 14px;
+  letter-spacing: 0.14em;
+  color: var(--dark-3);
+}
+
+/* ===== About ===== */
+.about { background: transparent; }
+.about-body p { font-size: 14px; color: var(--dark-2); }
+.gauge {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 34px 0;
+}
+.gauge-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  color: var(--dark-3);
+  white-space: nowrap;
+}
+.gauge-bar {
+  flex: 1;
+  height: 1px;
+  background: var(--sub-1);
+  position: relative;
+}
+.gauge-bar i {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 9px; height: 9px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--accent-rui); /* 50:50の境界点 */
+}
+.about-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--accent-soft);
+  line-height: 1.9;
+}
+
+/* ===== World ===== */
+.world { background: var(--base-alt); max-width: none; }
+.world .section-head, .world-body { max-width: 720px; margin-left: auto; margin-right: auto; }
+.world .section-head { margin-bottom: 36px; }
+.world-body p { font-size: 14px; color: var(--dark-2); }
+.world-words {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 28px;
+}
+.world-words li {
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  color: var(--dark-3);
+  border: 1px solid var(--sub-2);
+  padding: 7px 16px;
+}
+
+/* ===== Organizations ===== */
+.orgs { max-width: 860px; }
+.org-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 28px;
+}
+@media (min-width: 640px) {
+  .org-grid { grid-template-columns: 1fr 1fr; }
+  .org-light { margin-top: 36px; } /* ここも段差 */
+}
+.org-card figure { overflow: hidden; margin-bottom: 16px; }
+.org-card img { aspect-ratio: 3/2; object-fit: cover; width: 100%; }
+.org-card h3 {
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  margin-bottom: 8px;
+}
+.org-card p { font-size: 13px; color: var(--dark-2); line-height: 2; }
+.org-dark h3 { color: var(--logo-dark); }
+.org-dark figure { border: 1px solid color-mix(in srgb, var(--logo-dark) 25%, transparent); }
+.org-light figure { border: 1px solid color-mix(in srgb, var(--sub-1) 70%, transparent); }
+
+/* ===== TikTok ===== */
+.tiktok { text-align: center; }
+.tiktok-embed-slot {
+  margin: 0 auto 32px;
+  max-width: 340px;
+  aspect-ratio: 9/16;
+  max-height: 420px;
+  background:
+    linear-gradient(160deg, color-mix(in srgb, var(--sub-1) 50%, var(--base-alt)), var(--base-alt));
+  border: 1px solid var(--sub-2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.slot-label {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  color: var(--accent-soft);
+}
+.btn {
+  display: inline-block;
+  font-family: var(--font-ui);
+  font-weight: 400;
+  font-size: 13px;
+  letter-spacing: 0.14em;
+  padding: 14px 34px;
+  transition: opacity .25s ease;
+}
+.btn-accent {
+  background: var(--logo-dark);
+  color: var(--base);
+}
+.btn-accent:hover { opacity: 0.86; }
+
+/* ===== Music ===== */
+.music-body {
+  display: flex;
+  gap: 24px;
+  align-items: center;
+}
+.music-jacket {
+  flex: 0 0 128px;
+  border: 1px solid var(--sub-2);
+}
+.music-meta p { font-size: 13.5px; color: var(--dark-2); }
+.music-soon {
+  margin-top: 10px;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  color: var(--accent-soft);
+}
+@media (max-width: 420px) {
+  .music-body { flex-direction: column; align-items: flex-start; }
+  .music-jacket { flex-basis: auto; width: 160px; }
+}
+
+/* ===== Project ===== */
+.project-list { list-style: none; }
+.project-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 18px 2px;
+  border-bottom: 1px solid color-mix(in srgb, var(--sub-1) 55%, transparent);
+}
+.pj-name { font-size: 14px; letter-spacing: 0.1em; }
+.pj-status {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 12.5px;
+  letter-spacing: 0.12em;
+  color: var(--accent-rui);
+  white-space: nowrap;
+}
+.project-note {
+  margin-top: 40px;
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 12px;
+  line-height: 2.1;
+  letter-spacing: 0.08em;
+  color: var(--dark-3);
+}
+
+/* ===== Footer ===== */
+.site-footer {
+  background: var(--dark-1);
+  color: var(--base);
+  text-align: center;
+  padding: 72px 24px 48px;
+}
+.footer-concept {
+  font-size: 16px;
+  letter-spacing: 0.2em;
+  margin-bottom: 12px;
+}
+.footer-en {
+  font-family: var(--font-en);
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--sub-2);
+  margin-bottom: 40px;
+}
+.footer-credit {
+  font-family: var(--font-ui);
+  font-weight: 300;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  color: var(--sub-1);
+}
