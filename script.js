@@ -40,3 +40,38 @@
   const p = video.play && video.play();
   if (p && typeof p.catch === 'function') p.catch(() => {/* posterのまま */});
 })();
+
+// BGM ON/OFF: ユーザー操作で30秒MP3をループ再生
+(function () {
+  const audio = document.getElementById('siteBgm');
+  const btn = document.querySelector('[data-bgm-toggle]');
+  if (!audio || !btn) return;
+
+  const label = btn.querySelector('.bgm-label');
+  audio.volume = 0.52;
+
+  const setState = (on) => {
+    btn.classList.toggle('is-on', on);
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? 'BGMをオフにする' : 'BGMをオンにする');
+    if (label) label.textContent = on ? 'BGM ON' : 'BGM OFF';
+  };
+
+  btn.addEventListener('click', async () => {
+    if (audio.paused) {
+      try {
+        await audio.play();
+        setState(true);
+      } catch (err) {
+        setState(false);
+      }
+    } else {
+      audio.pause();
+      setState(false);
+    }
+  });
+
+  audio.addEventListener('play', () => setState(true));
+  audio.addEventListener('pause', () => setState(false));
+})();
+

@@ -29,10 +29,18 @@
   <nav class="header-nav" aria-label="セクション">
     <a href="#characters">Characters</a>
     <a href="#about">About</a>
+    <a href="#diagnosis">50:50</a>
     <a href="#tiktok">TikTok</a>
     <a href="#project">Project</a>
   </nav>
 </header>
+
+<!-- ===== BGM Control ===== -->
+<button class="bgm-toggle" type="button" aria-pressed="false" aria-label="BGMをオンにする" data-bgm-toggle>
+  <span class="bgm-mark" aria-hidden="true"></span>
+  <span class="bgm-label">BGM OFF</span>
+</button>
+<audio id="siteBgm" src="assets/audio/bgm-main.mp3" preload="auto" loop></audio>
 
 <!-- ===== 1. Hero ===== -->
 <section class="hero" id="hero">
@@ -121,6 +129,60 @@
   </div>
 </section>
 
+<!-- ===== 3.5 50:50 Check（診断） ===== -->
+<section class="section diagnosis" id="diagnosis">
+  <div class="section-head fade">
+    <p class="eyebrow">50:50&nbsp;CHECK</p>
+    <h2>あなたの中の、50対50。</h2>
+    <p class="section-lead">六つの選択で、任務と感情の比率を測る。</p>
+  </div>
+
+  <div class="diag-stage fade" id="diagStage">
+
+    <!-- 導入 -->
+    <div class="diag-view" data-diag-view="intro">
+      <p class="diag-copy">あなたは諜報員。任務の途中、六つの場面に出会う。<br>選んだ分だけ、比率が動く。</p>
+      <button type="button" class="btn btn-accent diag-start">確かめる</button>
+    </div>
+
+    <!-- 設問（中身はJSが差し込む） -->
+    <div class="diag-view" data-diag-view="question" hidden>
+      <p class="diag-progress"><span class="diag-qnum">01</span>&nbsp;/&nbsp;<span class="diag-qtotal">06</span></p>
+      <div class="diag-progress-bar" aria-hidden="true"><i></i></div>
+      <p class="diag-qtext"></p>
+      <div class="diag-choices">
+        <button type="button" class="diag-choice" data-side="m"></button>
+        <button type="button" class="diag-choice" data-side="e"></button>
+      </div>
+    </div>
+
+    <!-- 結果 -->
+    <div class="diag-view diag-result" data-diag-view="result" hidden aria-live="polite">
+      <p class="diag-result-eyebrow">YOUR&nbsp;RATIO</p>
+      <h3 class="diag-type"></h3>
+      <p class="diag-type-en"></p>
+      <div class="gauge diag-gauge" role="img" aria-label="あなたの任務と感情の比率">
+        <span class="gauge-label">MISSION&nbsp;<b class="diag-m">50</b></span>
+        <span class="gauge-bar"><i></i></span>
+        <span class="gauge-label">EMOTION&nbsp;<b class="diag-e">50</b></span>
+      </div>
+      <p class="diag-result-copy"></p>
+      <figure class="diag-card-fig">
+        <img class="diag-card-img" alt="50:50診断の結果カード">
+        <figcaption>画像を長押しでも保存できます</figcaption>
+      </figure>
+      <div class="diag-actions">
+        <button type="button" class="btn btn-accent diag-share">画像をシェア</button>
+        <button type="button" class="btn btn-line diag-save">画像を保存</button>
+        <button type="button" class="btn btn-line diag-copy-cap">キャプションをコピー</button>
+      </div>
+      <p class="diag-note">#50by50 を添えて、あなたの比率を残していって。</p>
+      <button type="button" class="diag-retry">もう一度確かめる</button>
+    </div>
+
+  </div>
+</section>
+
 <!-- ===== 4. World ===== -->
 <section class="section world" id="world">
   <div class="section-head fade">
@@ -163,10 +225,21 @@
     <p class="section-lead">敵同士なのに、距離が近すぎる。— 最新話はTikTokで公開中。</p>
   </div>
   <div class="tiktok-body fade">
-    <!-- 投稿埋め込みは確定後にここへ差し込み（blockquote方式） -->
-    <div class="tiktok-embed-slot" data-note="投稿embed差し込み位置">
-      <p class="slot-label">最新投稿</p>
-    </div>
+    <blockquote class="tiktok-embed" cite="https://www.tiktok.com/@renfew_ito/video/7650756233498021138" data-video-id="7650756233498021138" style="max-width: 360px; min-width: 325px;">
+      <section>
+        <a target="_blank" title="@renfew_ito" href="https://www.tiktok.com/@renfew_ito?refer=embed">@renfew_ito</a>
+        敵組織の諜報員に回収される敵組織の諜報員。任務中です。本当に任務中なんです。
+        ※本編前のif/番外です。銀髪の彼は、抱えてる相手との過去を覚えていません。
+        オリジナル曲🎧「Sweet Stain」
+        <a title="創作bl" target="_blank" href="https://www.tiktok.com/tag/%E5%89%B5%E4%BD%9Cbl?refer=embed">#創作BL</a>
+        <a title="創作bl" target="_blank" href="https://www.tiktok.com/tag/%E5%89%B5%E4%BD%9Cbl?refer=embed">#創作BL</a>
+        <a title="敵同士" target="_blank" href="https://www.tiktok.com/tag/%E6%95%B5%E5%90%8C%E5%A3%AB?refer=embed">#敵同士</a>
+        <a title="50by50" target="_blank" href="https://www.tiktok.com/tag/50by50?refer=embed">#50by50</a>
+        <a title="お姫様抱っこ" target="_blank" href="https://www.tiktok.com/tag/%E3%81%8A%E5%A7%AB%E6%A7%98%E6%8A%B1%E3%81%A3%E3%81%93?refer=embed">#お姫様抱っこ</a>
+        <a target="_blank" title="♬ オリジナル楽曲  - Renfew" href="https://www.tiktok.com/music/オリジナル楽曲-Renfew-7650756279216507669?refer=embed">♬ オリジナル楽曲  - Renfew</a>
+      </section>
+    </blockquote>
+    <script async src="https://www.tiktok.com/embed.js"></script>
     <a class="btn btn-accent" href="https://www.tiktok.com/@renfew_ito" target="_blank" rel="noopener">
       TikTokで最新投稿を見る
     </a>
@@ -182,8 +255,8 @@
   <div class="music-body fade">
     <figure class="music-jacket"><img src="assets/images/music-50by50.webp" alt="50by50 Concept Track ジャケット" loading="lazy"></figure>
     <div class="music-meta">
-      <p>抑制と激情。電子音と生楽器が、任務と感情の50:50を奏でる主題歌。</p>
-      <p class="music-soon">配信リンクは近日公開。</p>
+      <p>抑制と高揚。任務と感情の50:50を奏でる、始まりのテーマ曲。</p>
+      <p class="music-soon">BGM ONで30秒ループ試聴できます。</p>
     </div>
   </div>
 </section>
@@ -199,7 +272,7 @@
     <li><span class="pj-name">TikTok&nbsp;Carousel&nbsp;Manga</span><span class="pj-status">ongoing</span></li>
     <li><span class="pj-name">Concept&nbsp;Track</span><span class="pj-status">coming&nbsp;soon</span></li>
   </ul>
-  <p class="project-note fade">AI画像生成を制作工程に含む一次創作BLプロジェクトです。物語・演出・構成・デザインはすべて人の判断で作っています。</p>
+  <p class="project-note fade">当プロジェクトは、一次創作BLとして、物語・演出・構成・デザインを制作者Renfewが主導し、本人の手作業とAIアシストを併用して制作しています。</p>
 </section>
 
 <!-- ===== Footer ===== -->
@@ -210,5 +283,6 @@
 </footer>
 
 <script src="script.js"></script>
+<script src="diagnosis.js"></script>
 </body>
 </html>
