@@ -854,8 +854,38 @@ a:focus-visible, button:focus-visible {
     font-size: 11px;
   }
 }
+
+@media (max-width: 560px) {
+  .section-lead,
+  .char-note,
+  .about-body > p:not(.about-en),
+  .world-body p,
+  .org-card p,
+  .project-note,
+  .diag-copy,
+  .diag-qtext,
+  .diag-result-copy,
+  .diag-note {
+    text-align: left;
+    letter-spacing: 0.04em;
+  }
+
+  .tiktok .section-head,
+  .diagnosis .section-head {
+    text-align: left;
+  }
+
+  .diag-copy br {
+    display: none;
+  }
+
+  .diag-choice {
+    text-align: left;
+    letter-spacing: 0.04em;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bgm-toggle { transition: none; }
   .bgm-toggle:hover { transform: none; }
 }
-
