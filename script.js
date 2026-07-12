@@ -203,6 +203,23 @@
   audio.addEventListener('pause', () => setState(false));
 })();
 
+// ジュークボックスとBGMの二重再生防止: iframe操作を検知してBGMを自動一時停止
+(function () {
+  var audio = document.getElementById('siteBgm');
+  var wrap = document.querySelector('.jukebox-wrap');
+  if (!audio || !wrap) return;
+  var iframe = wrap.querySelector('iframe');
+
+  var pauseBgm = function () { if (!audio.paused) audio.pause(); };
+
+  /* ラッパー上のタップ/クリック（iframe外周）で停止 */
+  wrap.addEventListener('pointerdown', pauseBgm);
+  /* iframe内のクリックは直接拾えないため、iframeへのフォーカス移動で検知 */
+  window.addEventListener('blur', function () {
+    if (iframe && document.activeElement === iframe) pauseBgm();
+  });
+})();
+
 // はじめ方は、6つ。— 横回転セレクター（ドラッグ/タップ/←→キー）
 (function () {
   "use strict";
