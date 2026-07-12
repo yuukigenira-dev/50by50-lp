@@ -90,6 +90,16 @@ a:focus-visible, button:focus-visible {
   object-fit: cover;
   opacity: 0.3; /* 規定: 0.25〜0.35 */
 }
+.hero-bg img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center 58%; /* 水面ライン(WATER_TOP)と合わせる */
+}
+.hero-bg canvas {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
 .hero-veil {
   position: absolute; inset: 0;
   background:
@@ -167,6 +177,46 @@ a:focus-visible, button:focus-visible {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
+/* ===== News band ===== */
+.news-band {
+  background: var(--base-alt);
+  border-top: 1px solid color-mix(in srgb, var(--sub-1) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sub-1) 55%, transparent);
+}
+.news-list {
+  list-style: none;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+.news-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.news-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  color: var(--accent-rui);
+  white-space: nowrap;
+}
+.news-date {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent-soft);
+  white-space: nowrap;
+}
+.news-text {
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  color: var(--dark-2);
+}
+a.news-text:hover { color: var(--logo-dark); }
+
 /* ===== Sections common ===== */
 .section {
   padding: 88px 24px;
@@ -205,6 +255,185 @@ a:focus-visible, button:focus-visible {
   html { scroll-behavior: auto; }
   .fade { opacity: 1; transform: none; transition: none; }
   .hero-scroll-line { animation: none; }
+}
+
+/* ===== Entries（はじめ方は、6つ。） ===== */
+.section.entries {
+  max-width: 980px;
+  text-align: center;
+}
+.entries {
+  --sel-card-w: min(248px, 60vw);
+  --sel-card-h: calc(var(--sel-card-w) * 1.42);
+  --sel-line: color-mix(in srgb, var(--sub-1) 55%, white);
+}
+.entry-stage {
+  position: relative;
+  height: calc(var(--sel-card-h) + 70px);
+  margin-top: 34px;
+  perspective: 1100px;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.entry-stage.dragging { cursor: grabbing; }
+.entry-card {
+  position: absolute;
+  left: 50%; top: 26px;
+  width: var(--sel-card-w);
+  height: var(--sel-card-h);
+  margin-left: calc(var(--sel-card-w) / -2);
+  border-radius: 16px;
+  padding: 22px 18px 18px;
+  background: rgba(255, 255, 255, .86);
+  border: 1px solid var(--sel-line);
+  box-shadow: 0 18px 40px -22px rgba(52, 46, 110, .45);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+.entry-card .no {
+  font-family: var(--font-display);
+  font-size: 12px;
+  letter-spacing: .3em;
+  color: var(--accent-soft);
+}
+.entry-card .en {
+  font-family: var(--font-en);
+  font-weight: 500;
+  font-size: 26px;
+  letter-spacing: .14em;
+  color: var(--dark-1);
+}
+.entry-card .chip {
+  font-family: var(--font-ui);
+  font-size: 10px;
+  letter-spacing: .18em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--sel-line);
+  color: var(--logo-dark);
+  background: #fff;
+}
+.entry-card .chip.live {
+  border-color: var(--accent-rui);
+  background: linear-gradient(180deg, #F1EEFB, #E7E2F8);
+}
+.entry-card .art {
+  width: 100%;
+  flex: 1;
+  border-radius: 10px;
+  margin: 8px 0 4px;
+  border: 1px solid var(--sel-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 40px;
+  color: var(--accent-rui);
+  background:
+    radial-gradient(80% 60% at 50% 20%, color-mix(in srgb, var(--sub-2) 40%, transparent), transparent 70%),
+    linear-gradient(160deg, #FBFAFE, #EDE9F9);
+}
+.entry-card .jp {
+  font-family: var(--font-ui);
+  font-size: 12.5px;
+  color: var(--dark-3);
+  letter-spacing: .06em;
+}
+.entry-card.active { border-color: var(--sub-2); }
+.entry-card.active::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+  border-radius: 20px;
+  border: 1px solid color-mix(in srgb, var(--accent-rui) 45%, transparent);
+  pointer-events: none;
+}
+
+/* 判定ライン(音ゲーのレーン線) */
+.entry-lane {
+  position: absolute;
+  left: 8%; right: 8%; bottom: 16px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--sub-2) 20%, var(--accent-rui) 50%, var(--sub-2) 80%, transparent);
+}
+.entry-lane::after {
+  content: "";
+  position: absolute;
+  left: 50%; top: -4px;
+  width: 9px; height: 9px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: var(--accent-rui);
+  box-shadow: 0 0 0 5px color-mix(in srgb, var(--accent-rui) 15%, transparent);
+}
+
+/* 選択表示 */
+.entry-readout { margin-top: 6px; min-height: 170px; }
+.entry-kicker {
+  font-family: var(--font-en);
+  font-size: 11.5px;
+  letter-spacing: .4em;
+  color: var(--accent-soft);
+}
+.entry-readout h3 {
+  font-size: clamp(17px, 3.6vw, 21px);
+  font-weight: 500;
+  letter-spacing: .1em;
+  margin: 6px 0;
+}
+.entry-desc {
+  font-family: var(--font-ui);
+  font-size: 13px;
+  color: var(--dark-2);
+  margin: 0 auto;
+  max-width: 520px;
+  line-height: 1.8;
+}
+.entry-cta { margin-top: 14px; }
+.entry-cta[aria-disabled="true"] {
+  background: var(--sub-1);
+  border-color: var(--sub-1);
+  color: var(--dark-3);
+  cursor: default;
+}
+.entry-cta[aria-disabled="true"]:hover { opacity: 1; }
+
+.entry-dots {
+  display: flex;
+  gap: 9px;
+  justify-content: center;
+  margin-top: 20px;
+}
+.entry-dots button {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--sub-2);
+  opacity: .45;
+  transition: .2s;
+  padding: 0;
+}
+.entry-dots button.on {
+  opacity: 1;
+  background: var(--accent-rui);
+  transform: scale(1.25);
+}
+.entry-hint {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  color: var(--accent-soft);
+  letter-spacing: .1em;
+  margin-top: 14px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .entry-dots button { transition: none; }
 }
 
 /* ===== Characters ===== */
@@ -730,6 +959,26 @@ a:focus-visible, button:focus-visible {
   color: var(--base);
 }
 .btn-accent:hover { opacity: 0.86; }
+
+/* ===== Music: Resonant Jukebox ===== */
+.jukebox-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0;
+}
+.jukebox-wrap iframe {
+  max-width: 100%;
+  border-radius: 14px;
+  box-shadow: 0 18px 40px -22px rgba(52, 46, 110, .45);
+}
+.jukebox-note {
+  margin-top: 16px;
+  font-family: var(--font-ui);
+  font-size: 11.5px;
+  letter-spacing: 0.08em;
+  color: var(--dark-3);
+  text-align: center;
+}
 
 /* ===== Music ===== */
 .music-body {
