@@ -203,3 +203,164 @@
   audio.addEventListener('pause', () => setState(false));
 })();
 
+// はじめ方は、6つ。— 横回転セレクター（ドラッグ/タップ/←→キー）
+(function () {
+  "use strict";
+  var stage = document.getElementById('entryStage');
+  var dots = document.getElementById('entryDots');
+  var section = document.getElementById('entries');
+  if (!stage || !dots || !section) return;
+
+  var ENTRIES = [
+    { no: "I", en: "READ", jp: "小説で世界に触れる", chip: "COMING SOON", live: false, glyph: "読",
+      kicker: "I ── READ", title: "小説で世界に触れる",
+      desc: "第1巻(Episode 01–04)を Kindle Unlimited で近日公開。",
+      cta: "近日公開", href: null },
+    { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, glyph: "聴",
+      kicker: "II ── LISTEN", title: "彼らの武器を、聴く。",
+      desc: "泪はバイオリンを奏で、薫は歌う——戦いの音、全19曲。",
+      cta: "ジュークボックスを開く", href: "https://renfew.itch.io/50by50-jukebox" },
+    { no: "III", en: "WATCH", jp: "ショート映像で世界を覗く", chip: "更新中", live: true, glyph: "観",
+      kicker: "III ── WATCH", title: "ショート映像で世界を覗く",
+      desc: "ふたりの「事故距離」はここから。最新のショート映像とカルーセル漫画をTikTokで公開中。",
+      cta: "TikTokで見る", href: "https://www.tiktok.com/@renfew_ito" },
+    { no: "IV", en: "PLAY", jp: "特別版ノベルゲーム", chip: "IN DEVELOPMENT", live: false, glyph: "遊",
+      kicker: "IV ── PLAY", title: "特別版ノベルゲーム",
+      desc: "選択で変化する物語体験。Episode 0 を開発中——もうひとつの50by50を、あなたの選択で。",
+      cta: "続報を待つ", href: null },
+    { no: "V", en: "RHYTHM", jp: "50by50音ゲーム", chip: "COMING SOON", live: false, glyph: "律",
+      kicker: "V ── RHYTHM", title: "50by50音ゲーム。",
+      desc: "メイン曲に合わせてリズムを体感しよう。",
+      cta: "近日公開", href: null },
+    { no: "VI", en: "WORLD", jp: "50by50簡易メタバース", chip: "DEVELOPMENT", live: false, glyph: "歩",
+      kicker: "VI ── WORLD", title: "50by50簡易メタバース。",
+      desc: "幻想都市を歩き回ろう。",
+      cta: "続報を待つ", href: null }
+  ];
+
+  var N = ENTRIES.length;
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* カード生成 */
+  var cards = ENTRIES.map(function (e, i) {
+    var el = document.createElement('div');
+    el.className = 'entry-card';
+    el.setAttribute('role', 'option');
+    el.dataset.i = i;
+    el.innerHTML = '<div class="no">' + e.no + '</div><div class="en">' + e.en + '</div>' +
+      '<div class="chip' + (e.live ? ' live' : '') + '">' + e.chip + '</div>' +
+      '<div class="art">' + e.glyph + '</div><div class="jp">' + e.jp + '</div>';
+    stage.appendChild(el);
+    return el;
+  });
+  var lane = document.createElement('div');
+  lane.className = 'entry-lane';
+  stage.appendChild(lane);
+  ENTRIES.forEach(function (_, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-label', '入り口 ' + (i + 1));
+    b.addEventListener('click', function () { goTo(i); });
+    dots.appendChild(b);
+  });
+
+  /* 回転状態: pos(実数)→target(整数)へ緩やかに追従 */
+  var pos = 0, target = 0, dragging = false, lastShown = -1;
+
+  function shortest(i, p) { return ((i - p + N / 2) % N + N) % N - N / 2; }
+
+  function render() {
+    for (var i = 0; i < N; i++) {
+      var d = shortest(i, pos);
+      var abs = Math.abs(d);
+      cards[i].style.transform =
+        'translateX(' + (d * 72) + '%) ' +
+        'rotateY(' + (d * -36) + 'deg) ' +
+        'translateZ(' + (-abs * 150) + 'px) ' +
+        'scale(' + (1 - abs * 0.11) + ')';
+      cards[i].style.opacity = abs > 1.55 ? 0 : 1 - abs * 0.22;
+      cards[i].style.zIndex = String(100 - Math.round(abs * 10));
+      cards[i].style.pointerEvents = abs > 1.55 ? 'none' : 'auto';
+      cards[i].classList.toggle('active', abs < .5);
+    }
+    var act = ((Math.round(pos) % N) + N) % N;
+    if (act !== lastShown) { lastShown = act; showReadout(act); }
+  }
+
+  function showReadout(i) {
+    var e = ENTRIES[i];
+    document.getElementById('entryKicker').textContent = e.kicker;
+    document.getElementById('entryTitle').textContent = e.title;
+    document.getElementById('entryDesc').textContent = e.desc;
+    var cta = document.getElementById('entryCta');
+    cta.textContent = e.cta;
+    if (e.href) {
+      cta.href = e.href;
+      cta.target = '_blank';
+      cta.rel = 'noopener';
+      cta.removeAttribute('aria-disabled');
+    } else {
+      cta.removeAttribute('href');
+      cta.removeAttribute('target');
+      cta.setAttribute('aria-disabled', 'true');
+    }
+    var ds = dots.children;
+    for (var k = 0; k < N; k++) ds[k].classList.toggle('on', k === i);
+  }
+
+  function loop() {
+    if (!dragging) {
+      var diff = target - pos;
+      pos += reduced ? diff : diff * 0.14;
+      if (Math.abs(target - pos) < 0.001) pos = target;
+    }
+    render();
+    requestAnimationFrame(loop);
+  }
+
+  function goTo(i) { target = pos + shortest(i, pos); }
+
+  /* ドラッグ/スワイプ */
+  var startX = 0, startPos = 0, moved = 0;
+  stage.addEventListener('pointerdown', function (ev) {
+    dragging = true; moved = 0; startX = ev.clientX; startPos = pos;
+    stage.classList.add('dragging');
+    stage.setPointerCapture(ev.pointerId);
+  });
+  stage.addEventListener('pointermove', function (ev) {
+    if (!dragging) return;
+    var dx = ev.clientX - startX;
+    moved = Math.max(moved, Math.abs(dx));
+    pos = startPos - dx / 230;
+  });
+  function release() {
+    if (!dragging) return;
+    dragging = false;
+    stage.classList.remove('dragging');
+    target = Math.round(pos);
+  }
+  stage.addEventListener('pointerup', release);
+  stage.addEventListener('pointercancel', release);
+
+  /* カードタップで選択(ドラッグと区別) */
+  cards.forEach(function (el, i) {
+    el.addEventListener('click', function () { if (moved < 8) goTo(i); });
+  });
+
+  /* キーボード: セレクターが画面内にあるときだけ←→で回す（ページ操作と干渉させない） */
+  var inView = true;
+  if ('IntersectionObserver' in window) {
+    inView = false;
+    new IntersectionObserver(function (entries) {
+      inView = entries[0].isIntersecting;
+    }, { threshold: 0.25 }).observe(section);
+  }
+  window.addEventListener('keydown', function (ev) {
+    if (!inView || ev.altKey || ev.ctrlKey || ev.metaKey) return;
+    if (ev.key === 'ArrowRight') target = Math.round(pos) + 1;
+    if (ev.key === 'ArrowLeft') target = Math.round(pos) - 1;
+  });
+
+  render(); showReadout(0); loop();
+})();
+
