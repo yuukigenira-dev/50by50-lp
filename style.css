@@ -177,6 +177,46 @@ a:focus-visible, button:focus-visible {
   100% { transform: scaleY(0); transform-origin: bottom; }
 }
 
+/* ===== News band ===== */
+.news-band {
+  background: var(--base-alt);
+  border-top: 1px solid color-mix(in srgb, var(--sub-1) 55%, transparent);
+  border-bottom: 1px solid color-mix(in srgb, var(--sub-1) 55%, transparent);
+}
+.news-list {
+  list-style: none;
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 14px 24px;
+}
+.news-list li {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+.news-label {
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.36em;
+  color: var(--accent-rui);
+  white-space: nowrap;
+}
+.news-date {
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: var(--accent-soft);
+  white-space: nowrap;
+}
+.news-text {
+  font-size: 12.5px;
+  letter-spacing: 0.1em;
+  color: var(--dark-2);
+}
+a.news-text:hover { color: var(--logo-dark); }
+
 /* ===== Sections common ===== */
 .section {
   padding: 88px 24px;
