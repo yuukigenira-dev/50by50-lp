@@ -101,23 +101,33 @@ a:focus-visible, button:focus-visible {
   pointer-events: none;
 }
 .hero-veil {
+  /* 全面を薄めず、文言の背後だけ光だまりを作る局所スクリム */
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 90% 60% at 70% 20%, color-mix(in srgb, var(--sub-1) 45%, transparent), transparent 70%),
-    radial-gradient(ellipse 80% 55% at 25% 85%, color-mix(in srgb, var(--sub-2) 40%, transparent), transparent 70%),
-    linear-gradient(180deg, color-mix(in srgb, var(--base) 30%, transparent), color-mix(in srgb, var(--base) 65%, transparent));
+    radial-gradient(ellipse 76% 58% at 50% 44%, color-mix(in srgb, var(--base) 55%, transparent), transparent 72%),
+    linear-gradient(180deg, color-mix(in srgb, var(--base) 32%, transparent), transparent 20%),
+    linear-gradient(0deg, color-mix(in srgb, var(--dark-1) 14%, transparent), transparent 24%);
 }
 .hero-inner {
   position: relative;
   z-index: 1;
   padding: 96px 24px 64px;
   max-width: 560px;
+  /* 原色の絵の上でも文字が沈まないよう、白のグローで浮かせる */
+  text-shadow:
+    0 0 14px rgba(255, 255, 255, 0.9),
+    0 0 34px rgba(255, 255, 255, 0.55);
+}
+.hero-logo img {
+  filter:
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.85))
+    drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
 }
 .hero-eyebrow {
   font-family: var(--font-en);
   font-size: 12px;
   letter-spacing: 0.42em;
-  color: var(--accent-soft);
+  color: var(--logo-dark);
   margin-bottom: 28px;
 }
 .hero-logo img {
@@ -157,6 +167,9 @@ a:focus-visible, button:focus-visible {
   border-top: 1px solid var(--sub-2);
   border-bottom: 1px solid var(--sub-2);
   padding: 10px 22px;
+  background: color-mix(in srgb, var(--base) 42%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 .hero-scroll {
   position: absolute;
