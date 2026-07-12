@@ -51,7 +51,7 @@
   var ctx = cv.getContext('2d');
   var W = 0, H = 0, DPR = 1;
   var WATER_TOP = 0.58;           /* 水面ラインの高さ(比率) */
-  var RAIN_COLOR = '190,186,225'; /* 淡いラベンダーグレー */
+  var RAIN_COLOR = '124,113,212'; /* 青紫（原色背景でも見えるよう濃いめ） */
 
   function resize() {
     DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -71,7 +71,7 @@
   function newDrop(y) {
     return { x: Math.random() * W, y: (y != null ? y : -20),
       len: 24 + Math.random() * 24, spd: 240 + Math.random() * 200,
-      a: .14 + Math.random() * .22 };
+      a: .3 + Math.random() * .25 };
   }
 
   /* ---- 波紋 ---- */
@@ -92,7 +92,7 @@
     var waterY = H * WATER_TOP;
 
     /* 雨 */
-    ctx.lineWidth = 1;
+    ctx.lineWidth = 1.15;
     for (var i = 0; i < drops.length; i++) {
       var d = drops[i];
       d.y += d.spd * dt; d.x += d.spd * dt * 0.055; /* わずかな斜め */
@@ -124,13 +124,13 @@
       var rad = r.maxR * p;
       var fade = Math.pow(1 - p, 1.6);
       var squash = .26 + (r.y - H * WATER_TOP) / (H * (1 - WATER_TOP)) * .1; /* 手前ほど楕円が開く */
-      ctx.strokeStyle = 'rgba(235,232,250,' + (fade * .55) + ')';
-      ctx.lineWidth = 1.1;
+      ctx.strokeStyle = 'rgba(164,153,230,' + (fade * .75) + ')';
+      ctx.lineWidth = 1.3;
       ctx.beginPath();
       ctx.ellipse(r.x, r.y, rad, rad * squash, 0, 0, Math.PI * 2);
       ctx.stroke();
       if (p < .4) {
-        ctx.strokeStyle = 'rgba(184,175,224,' + (fade * .35) + ')';
+        ctx.strokeStyle = 'rgba(110,99,198,' + (fade * .5) + ')';
         ctx.beginPath();
         ctx.ellipse(r.x, r.y, rad * .55, rad * squash * .55, 0, 0, Math.PI * 2);
         ctx.stroke();
@@ -236,7 +236,7 @@
     { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, glyph: "聴",
       kicker: "II ── LISTEN", title: "彼らの武器を、聴く。",
       desc: "泪はバイオリンを奏で、薫は歌う——戦いの音、全19曲。",
-      cta: "ジュークボックスを開く", href: "https://renfew.itch.io/50by50-jukebox" },
+      cta: "ジュークボックスで聴く", href: "#music" },
     { no: "III", en: "WATCH", jp: "ショート映像で世界を覗く", chip: "更新中", live: true, glyph: "観",
       kicker: "III ── WATCH", title: "ショート映像で世界を覗く",
       desc: "ふたりの「事故距離」はここから。最新のショート映像とカルーセル漫画をTikTokで公開中。",
@@ -313,8 +313,14 @@
     cta.textContent = e.cta;
     if (e.href) {
       cta.href = e.href;
-      cta.target = '_blank';
-      cta.rel = 'noopener';
+      if (e.href.charAt(0) === '#') {
+        /* ページ内アンカーは同一タブでスクロール */
+        cta.removeAttribute('target');
+        cta.removeAttribute('rel');
+      } else {
+        cta.target = '_blank';
+        cta.rel = 'noopener';
+      }
       cta.removeAttribute('aria-disabled');
     } else {
       cta.removeAttribute('href');

@@ -101,23 +101,33 @@ a:focus-visible, button:focus-visible {
   pointer-events: none;
 }
 .hero-veil {
+  /* 全面を薄めず、文言の背後だけ光だまりを作る局所スクリム */
   position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 90% 60% at 70% 20%, color-mix(in srgb, var(--sub-1) 45%, transparent), transparent 70%),
-    radial-gradient(ellipse 80% 55% at 25% 85%, color-mix(in srgb, var(--sub-2) 40%, transparent), transparent 70%),
-    linear-gradient(180deg, color-mix(in srgb, var(--base) 30%, transparent), color-mix(in srgb, var(--base) 65%, transparent));
+    radial-gradient(ellipse 76% 58% at 50% 44%, color-mix(in srgb, var(--base) 55%, transparent), transparent 72%),
+    linear-gradient(180deg, color-mix(in srgb, var(--base) 32%, transparent), transparent 20%),
+    linear-gradient(0deg, color-mix(in srgb, var(--dark-1) 14%, transparent), transparent 24%);
 }
 .hero-inner {
   position: relative;
   z-index: 1;
   padding: 96px 24px 64px;
   max-width: 560px;
+  /* 原色の絵の上でも文字が沈まないよう、白のグローで浮かせる */
+  text-shadow:
+    0 0 14px rgba(255, 255, 255, 0.9),
+    0 0 34px rgba(255, 255, 255, 0.55);
+}
+.hero-logo img {
+  filter:
+    drop-shadow(0 0 12px rgba(255, 255, 255, 0.85))
+    drop-shadow(0 0 30px rgba(255, 255, 255, 0.5));
 }
 .hero-eyebrow {
   font-family: var(--font-en);
   font-size: 12px;
   letter-spacing: 0.42em;
-  color: var(--accent-soft);
+  color: var(--logo-dark);
   margin-bottom: 28px;
 }
 .hero-logo img {
@@ -157,6 +167,9 @@ a:focus-visible, button:focus-visible {
   border-top: 1px solid var(--sub-2);
   border-bottom: 1px solid var(--sub-2);
   padding: 10px 22px;
+  background: color-mix(in srgb, var(--base) 42%, transparent);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
 }
 .hero-scroll {
   position: absolute;
@@ -915,6 +928,60 @@ a.news-text:hover { color: var(--logo-dark); }
   align-items: center;
 }
 
+.tiktok-thumb {
+  position: relative;
+  display: block;
+  width: min(100%, 440px);
+  aspect-ratio: 16 / 9;
+  margin: 0 auto 32px;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid color-mix(in srgb, var(--sub-1) 60%, transparent);
+  box-shadow: 0 18px 40px -22px rgba(52, 46, 110, .45);
+}
+.tiktok-thumb img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+.tiktok-thumb:hover img { transform: scale(1.04); }
+.play-badge {
+  position: absolute;
+  left: 50%; top: 50%;
+  width: 58px; height: 58px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--base) 82%, transparent);
+  backdrop-filter: blur(4px);
+  border: 1px solid color-mix(in srgb, var(--sub-2) 80%, transparent);
+  box-shadow: 0 10px 24px -10px rgba(52, 46, 110, .5);
+}
+.play-badge::after {
+  content: "";
+  position: absolute;
+  left: 54%; top: 50%;
+  transform: translate(-50%, -50%);
+  border-style: solid;
+  border-width: 10px 0 10px 16px;
+  border-color: transparent transparent transparent var(--logo-dark);
+}
+.thumb-handle {
+  position: absolute;
+  right: 12px; bottom: 10px;
+  font-family: var(--font-en);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--logo-dark);
+  background: color-mix(in srgb, var(--base) 78%, transparent);
+  backdrop-filter: blur(4px);
+  border: 1px solid color-mix(in srgb, var(--sub-2) 80%, transparent);
+  padding: 4px 10px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .tiktok-thumb img { transition: none; }
+  .tiktok-thumb:hover img { transform: none; }
+}
+
 .tiktok-embed {
   width: min(100%, 360px) !important;
   max-width: 360px !important;
@@ -1050,6 +1117,29 @@ a.news-text:hover { color: var(--logo-dark); }
   letter-spacing: 0.1em;
   color: var(--sub-2);
   margin-bottom: 40px;
+}
+.footer-sns {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  margin-bottom: 36px;
+}
+.footer-sns a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--font-en);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--sub-1);
+  border: 1px solid color-mix(in srgb, var(--sub-2) 45%, transparent);
+  border-radius: 999px;
+  padding: 9px 20px;
+  transition: opacity .2s ease, border-color .2s ease;
+}
+.footer-sns a:hover {
+  opacity: .75;
+  border-color: var(--sub-2);
 }
 .footer-credit {
   font-family: var(--font-ui);
