@@ -236,7 +236,7 @@
     { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, glyph: "聴",
       kicker: "II ── LISTEN", title: "彼らの武器を、聴く。",
       desc: "泪はバイオリンを奏で、薫は歌う——戦いの音、全19曲。",
-      cta: "ジュークボックスを開く", href: "https://renfew.itch.io/50by50-jukebox" },
+      cta: "ジュークボックスで聴く", href: "#music" },
     { no: "III", en: "WATCH", jp: "ショート映像で世界を覗く", chip: "更新中", live: true, glyph: "観",
       kicker: "III ── WATCH", title: "ショート映像で世界を覗く",
       desc: "ふたりの「事故距離」はここから。最新のショート映像とカルーセル漫画をTikTokで公開中。",
@@ -313,8 +313,14 @@
     cta.textContent = e.cta;
     if (e.href) {
       cta.href = e.href;
-      cta.target = '_blank';
-      cta.rel = 'noopener';
+      if (e.href.charAt(0) === '#') {
+        /* ページ内アンカーは同一タブでスクロール */
+        cta.removeAttribute('target');
+        cta.removeAttribute('rel');
+      } else {
+        cta.target = '_blank';
+        cta.rel = 'noopener';
+      }
       cta.removeAttribute('aria-disabled');
     } else {
       cta.removeAttribute('href');
