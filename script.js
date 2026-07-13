@@ -253,27 +253,27 @@
   if (!stage || !dots || !section) return;
 
   var ENTRIES = [
-    { no: "I", en: "READ", jp: "小説で世界に触れる", chip: "COMING SOON", live: false, glyph: "読",
+    { no: "I", en: "READ", jp: "小説で世界に触れる", chip: "COMING SOON", live: false, art: "assets/images/entry-read.webp",
       kicker: "I ── READ", title: "小説で世界に触れる",
       desc: "第1巻(Episode 01–04)を Kindle Unlimited で近日公開。",
       cta: "近日公開", href: null },
-    { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, glyph: "聴",
+    { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, art: "assets/images/entry-listen.webp",
       kicker: "II ── LISTEN", title: "彼らの武器を、聴く。",
       desc: "泪はバイオリンを奏で、薫は歌う——戦いの音、全19曲。",
       cta: "ジュークボックスで聴く", href: "#music" },
-    { no: "III", en: "WATCH", jp: "ショート映像で世界を覗く", chip: "更新中", live: true, glyph: "観",
+    { no: "III", en: "WATCH", jp: "ショート映像で世界を覗く", chip: "更新中", live: true, art: "assets/images/entry-watch.webp",
       kicker: "III ── WATCH", title: "ショート映像で世界を覗く",
       desc: "ふたりの「事故距離」はここから。最新のショート映像とカルーセル漫画をTikTokで公開中。",
       cta: "TikTokで見る", href: "https://www.tiktok.com/@renfew_ito" },
-    { no: "IV", en: "PLAY", jp: "特別版ノベルゲーム", chip: "IN DEVELOPMENT", live: false, glyph: "遊",
+    { no: "IV", en: "PLAY", jp: "特別版ノベルゲーム", chip: "IN DEVELOPMENT", live: false, art: "assets/images/entry-play.webp",
       kicker: "IV ── PLAY", title: "特別版ノベルゲーム",
       desc: "選択で変化する物語体験。Episode 0 を開発中——もうひとつの50by50を、あなたの選択で。",
       cta: "続報を待つ", href: null },
-    { no: "V", en: "RHYTHM", jp: "50by50音ゲーム", chip: "COMING SOON", live: false, glyph: "律",
+    { no: "V", en: "RHYTHM", jp: "50by50音ゲーム", chip: "COMING SOON", live: false, art: "assets/images/entry-rhythm.webp",
       kicker: "V ── RHYTHM", title: "50by50音ゲーム。",
       desc: "メイン曲に合わせてリズムを体感しよう。",
       cta: "近日公開", href: null },
-    { no: "VI", en: "WORLD", jp: "50by50簡易メタバース", chip: "DEVELOPMENT", live: false, glyph: "歩",
+    { no: "VI", en: "WORLD", jp: "50by50簡易メタバース", chip: "DEVELOPMENT", live: false, art: "assets/images/entry-world.webp",
       kicker: "VI ── WORLD", title: "50by50簡易メタバース。",
       desc: "幻想都市を歩き回ろう。",
       cta: "続報を待つ", href: null }
@@ -290,7 +290,8 @@
     el.dataset.i = i;
     el.innerHTML = '<div class="no">' + e.no + '</div><div class="en">' + e.en + '</div>' +
       '<div class="chip' + (e.live ? ' live' : '') + '">' + e.chip + '</div>' +
-      '<div class="art">' + e.glyph + '</div><div class="jp">' + e.jp + '</div>';
+      '<div class="art"><img src="' + e.art + '" alt="" loading="lazy" decoding="async"></div>' +
+      '<div class="jp">' + e.jp + '</div>';
     stage.appendChild(el);
     return el;
   });
