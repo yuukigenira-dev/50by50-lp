@@ -1,5 +1,29 @@
 /* 50by50 LP — script.js */
 
+// モバイルナビ（ハンバーガーメニュー）
+(function () {
+  var header = document.getElementById('siteHeader');
+  var btn = document.querySelector('.nav-toggle');
+  var nav = document.getElementById('headerNav');
+  if (!header || !btn || !nav) return;
+
+  var setOpen = function (on) {
+    header.classList.toggle('nav-open', on);
+    btn.setAttribute('aria-expanded', on ? 'true' : 'false');
+    btn.setAttribute('aria-label', on ? 'メニューを閉じる' : 'メニューを開く');
+  };
+  btn.addEventListener('click', function () {
+    setOpen(!header.classList.contains('nav-open'));
+  });
+  /* メニュー内リンクを押したら閉じる */
+  nav.addEventListener('click', function (ev) {
+    if (ev.target.closest && ev.target.closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', function (ev) {
+    if (ev.key === 'Escape') setOpen(false);
+  });
+})();
+
 // スクロール時 fade-in（IntersectionObserver）
 (function () {
   const targets = document.querySelectorAll('.fade');
