@@ -1202,14 +1202,12 @@ a.news-text:hover { color: var(--logo-dark); }
 .footer-sns a {
   display: inline-flex;
   align-items: center;
-  gap: 7px;
-  font-family: var(--font-en);
-  font-size: 12px;
-  letter-spacing: 0.18em;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
   color: var(--sub-1);
   border: 1px solid color-mix(in srgb, var(--sub-2) 45%, transparent);
-  border-radius: 999px;
-  padding: 9px 20px;
+  border-radius: 50%;
   transition: opacity .2s ease, border-color .2s ease;
 }
 .footer-sns a:hover {
