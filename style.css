@@ -171,6 +171,29 @@ a:focus-visible, button:focus-visible {
   backdrop-filter: blur(2px);
   -webkit-backdrop-filter: blur(2px);
 }
+/* デスクトップ: 絵の主役（中央〜右の二人）を隠さないよう、コピーを左上へ */
+@media (min-width: 900px) {
+  .hero-inner {
+    position: absolute;
+    left: clamp(40px, 7vw, 104px);
+    top: clamp(88px, 15vh, 150px);
+    padding: 0;
+    max-width: 520px;
+    text-align: left;
+  }
+  .hero-logo img { margin: 0 0 26px; }
+  .hero-formula { justify-content: flex-start; margin-bottom: 20px; }
+  .hero-concept { margin-bottom: 16px; }
+  .hero-emotion { margin-bottom: 30px; }
+  .hero-veil {
+    /* 光だまりも左上へ移動し、コピー下端（暗い衣装部分）までカバー */
+    background:
+      radial-gradient(ellipse 56% 76% at 20% 40%, color-mix(in srgb, var(--base) 66%, transparent), transparent 72%),
+      linear-gradient(180deg, color-mix(in srgb, var(--base) 30%, transparent), transparent 18%),
+      linear-gradient(0deg, color-mix(in srgb, var(--dark-1) 14%, transparent), transparent 24%);
+  }
+}
+
 .hero-scroll {
   position: absolute;
   bottom: 26px; left: 50%;
