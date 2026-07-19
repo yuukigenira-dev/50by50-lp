@@ -279,7 +279,7 @@
       cta: "近日公開", href: null },
     { no: "VII", en: "PLAY-03", jp: "特別版ノベルゲーム", chip: "IN DEVELOPMENT", live: false, art: "assets/images/entry-play.webp",
       kicker: "VII ── PLAY-03", title: "特別版ノベルゲーム",
-      desc: "選択で変化する物語体験。Episode 0 を開発中——もうひとつの50by50を、あなたの選択で。",
+      desc: "選択で変化する物語体験。Episode 0 を開発中——\nもうひとつの50by50を、あなたの選択で。",
       cta: "続報を待つ", href: null }
   ];
 
