@@ -1,0 +1,209 @@
+/* 50by50 Resonance Walk — rw.css
+ * トークン：#F7F7FA / #C9B8E8 / #7B6CE0 / #B79FE0 / #1B2140 ／ 線1px
+ * 黒背景・血赤・強発光は使わない。 */
+:root{
+  --base:#F7F7FA; --lav:#C9B8E8; --vio:#7B6CE0; --wis:#B79FE0; --navy:#1B2140;
+  --line:1px;
+  --ink:rgba(27,33,64,.86);
+  --ink-soft:rgba(27,33,64,.55);
+  --hair:rgba(123,108,224,.45);
+  --mono:"SFMono-Regular",ui-monospace,Menlo,Consolas,"Courier New",monospace;
+  --sans:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic Medium","Yu Gothic","Noto Sans JP",sans-serif;
+  --safe-b:env(safe-area-inset-bottom,0px);
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+#app{position:fixed;top:0;bottom:0;left:50%;transform:translateX(-50%);
+  width:min(100vw,calc(100vh * 0.66));height:100%;overflow:hidden}
+@media (min-aspect-ratio:0.72/1){
+  #app{border-left:var(--line) solid var(--hair);border-right:var(--line) solid var(--hair)}
+}
+@media (min-height:1000px){
+  #map-legend{font-size:12px;top:12px;right:20px}
+  #map-note{font-size:14px}
+}
+html,body{height:100%;overflow:hidden;overscroll-behavior:none}
+body{
+  background:var(--base); color:var(--ink);
+  font-family:var(--sans); font-weight:300;
+  -webkit-user-select:none; user-select:none;
+  touch-action:manipulation;
+}
+button{font-family:inherit;font-weight:300;color:var(--ink);background:none;border:none;cursor:pointer}
+.mono{font-family:var(--mono);letter-spacing:.08em}
+.hidden{display:none!important}
+
+/* ========== 画面共通 ========== */
+.screen{position:absolute;inset:0;display:none;flex-direction:column}
+.screen.active{display:flex}
+
+/* ========== タイトル ========== */
+#scr-title{align-items:center;justify-content:center;text-align:center;overflow:hidden}
+#title-bg{position:absolute;inset:0;background:center/cover no-repeat;
+  filter:saturate(.9)}
+#title-bg::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(247,247,250,.55) 0%,rgba(247,247,250,.28) 34%,rgba(247,247,250,.72) 72%,rgba(247,247,250,.95) 100%)}
+#title-inner{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:8px;
+  padding:24px;max-width:420px;width:100%}
+.t-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.42em;color:var(--ink-soft);
+  border-top:var(--line) solid var(--hair);border-bottom:var(--line) solid var(--hair);
+  padding:5px 12px}
+.t-logo{margin-top:18px;font-size:30px;letter-spacing:.14em;font-weight:300;color:var(--navy);line-height:1.3}
+.t-logo b{font-weight:500;color:var(--vio)}
+.t-sub{font-size:11px;letter-spacing:.5em;color:var(--ink-soft);margin-top:2px;text-indent:.5em}
+.t-menu{margin-top:44px;display:flex;flex-direction:column;gap:10px;width:min(240px,72vw)}
+.t-btn{position:relative;padding:12px 10px;font-size:13px;letter-spacing:.32em;text-indent:.32em;
+  border:var(--line) solid var(--hair);background:rgba(247,247,250,.55);
+  backdrop-filter:blur(2px);transition:border-color .25s,color .25s}
+.t-btn:active,.t-btn:hover{border-color:var(--vio);color:var(--vio)}
+.t-btn.primary{border-color:var(--vio);color:var(--vio)}
+.t-foot{position:absolute;bottom:calc(14px + var(--safe-b));z-index:2;font-family:var(--mono);
+  font-size:9px;letter-spacing:.3em;color:var(--ink-soft)}
+
+/* ========== 探索 ========== */
+#scr-explore{background:var(--base)}
+#world{position:absolute;inset:0;overflow:hidden}
+.p-layer{position:absolute;top:0;bottom:0;left:0;will-change:transform}
+#layer-bg{background-size:cover;background-position:center bottom}
+#layer-bg .wash{position:absolute;inset:0;background:var(--base)}
+#layer-bg .tint{position:absolute;inset:0;pointer-events:none}
+#layer-mid{pointer-events:none}
+#stage{position:absolute;inset:0;display:block}
+#fx-dom{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+
+/* 上端HUD */
+#hud-top{position:absolute;top:0;left:0;right:0;z-index:20;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:calc(10px + env(safe-area-inset-top,0px)) 14px 8px;
+  border-bottom:var(--line) solid var(--hair);
+  background:linear-gradient(180deg,rgba(247,247,250,.72),rgba(247,247,250,0))}
+#loc-name{font-family:var(--mono);font-size:11px;letter-spacing:.28em;color:var(--ink)}
+#hud-meta{font-family:var(--mono);font-size:9px;letter-spacing:.18em;color:var(--ink-soft);text-align:right;line-height:1.7}
+#hud-meta .sig i{display:inline-block;width:3px;height:7px;margin-left:2px;background:var(--lav);vertical-align:baseline}
+#hud-meta .sig i.on{background:var(--vio)}
+.icon-btn{width:36px;height:36px;display:flex;align-items:center;justify-content:center;
+  border:var(--line) solid var(--hair);background:rgba(247,247,250,.6)}
+.icon-btn svg{width:16px;height:16px;stroke:var(--ink);stroke-width:1;fill:none}
+#hud-top .left,#hud-top .right{display:flex;gap:8px;align-items:center}
+
+/* 下端操作圏（画面下1/3・親指圏） */
+#ctrl{position:absolute;left:0;right:0;bottom:0;z-index:20;
+  padding:10px 14px calc(14px + var(--safe-b));
+  display:flex;align-items:flex-end;justify-content:space-between;pointer-events:none}
+#ctrl .grp{display:flex;gap:10px;pointer-events:auto}
+.mv-btn{width:52px;height:52px;border:var(--line) solid var(--hair);border-radius:50%;
+  background:rgba(247,247,250,.42);backdrop-filter:blur(2px);
+  display:flex;align-items:center;justify-content:center;font-size:16px;color:var(--ink-soft)}
+.mv-btn:active{border-color:var(--vio);color:var(--vio)}
+#btn-inspect{min-width:96px;height:44px;border:var(--line) solid var(--hair);border-radius:22px;
+  background:rgba(247,247,250,.55);font-size:12px;letter-spacing:.3em;text-indent:.3em;
+  color:var(--ink-soft);transition:all .25s}
+#btn-inspect.ready{border-color:var(--vio);color:var(--vio);
+  box-shadow:0 0 0 1px rgba(123,108,224,.15)}
+
+/* 白フェード遷移 */
+#fade{position:fixed;inset:0;background:var(--base);opacity:0;pointer-events:none;
+  transition:opacity .3s linear;z-index:60}
+#fade.on{opacity:1;pointer-events:auto}
+
+/* 夢幻フック（藤色0.5秒） */
+#wisteria{position:fixed;inset:0;background:var(--wis);opacity:0;pointer-events:none;
+  mix-blend-mode:multiply;z-index:55;transition:opacity .18s}
+#wisteria.on{opacity:.38}
+#phase-note{position:fixed;top:22%;left:0;right:0;text-align:center;z-index:56;
+  font-family:var(--mono);font-size:10px;letter-spacing:.4em;color:var(--wis);
+  opacity:0;transition:opacity .6s;pointer-events:none}
+#phase-note.on{opacity:1}
+
+/* ログカード */
+#log-card{position:absolute;left:50%;bottom:calc(96px + var(--safe-b));z-index:30;
+  width:min(340px,86vw);transform:translate(-50%,24px);opacity:0;pointer-events:none;
+  transition:transform .4s cubic-bezier(.2,.7,.2,1),opacity .4s;
+  background:rgba(255,255,255,.78);backdrop-filter:blur(6px);
+  border:var(--line) solid var(--hair);padding:14px 16px 12px}
+#log-card.on{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+#log-card .lc-head{display:flex;justify-content:space-between;align-items:baseline;
+  border-bottom:var(--line) solid var(--hair);padding-bottom:7px;margin-bottom:9px}
+#log-card .lc-title{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--vio)}
+#log-card .lc-label{font-size:10px;letter-spacing:.2em;color:var(--ink-soft)}
+#log-card .lc-body{font-size:13px;line-height:1.9;letter-spacing:.06em;color:var(--ink);min-height:3.8em}
+#log-card .lc-close{display:block;margin:10px auto 0;font-family:var(--mono);font-size:10px;
+  letter-spacing:.3em;color:var(--ink-soft);padding:6px 18px;border:var(--line) solid var(--hair)}
+
+/* ========== オーバーレイ共通（マップ・ログ帳・設定・導線） ========== */
+.overlay{position:absolute;inset:0;z-index:40;display:none;flex-direction:column;
+  background:rgba(247,247,250,.94);backdrop-filter:blur(4px)}
+.overlay.active{display:flex}
+.ov-head{display:flex;align-items:center;justify-content:space-between;
+  padding:calc(14px + env(safe-area-inset-top,0px)) 18px 12px;
+  border-bottom:var(--line) solid var(--hair)}
+.ov-title{font-family:var(--mono);font-size:12px;letter-spacing:.34em;color:var(--ink)}
+.ov-close{font-family:var(--mono);font-size:11px;letter-spacing:.2em;color:var(--ink-soft);
+  padding:8px 14px;border:var(--line) solid var(--hair)}
+.ov-body{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:18px}
+
+/* マップ */
+#map-svg{width:100%;height:100%;display:block}
+#map-note{position:absolute;bottom:calc(20px + var(--safe-b));left:0;right:0;text-align:center;
+  font-size:11px;letter-spacing:.2em;color:var(--ink-soft);opacity:0;transition:opacity .4s}
+#map-note.on{opacity:1}
+
+/* ログ帳 */
+.lb-item{border:var(--line) solid var(--hair);background:rgba(255,255,255,.6);
+  padding:12px 14px;margin-bottom:12px}
+.lb-item .h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.lb-item .t{font-family:var(--mono);font-size:11px;letter-spacing:.18em;color:var(--vio)}
+.lb-item .l{font-size:10px;letter-spacing:.2em;color:var(--ink-soft)}
+.lb-item .b{font-size:12.5px;line-height:1.85;letter-spacing:.05em}
+.lb-item.empty{border-style:dashed;background:none}
+.lb-item.empty .b{color:var(--ink-soft);font-size:11px;letter-spacing:.24em}
+.lb-item.sealed{position:relative;overflow:hidden;background:rgba(255,255,255,.85)}
+.lb-item.sealed .b{color:rgba(27,33,64,.28);letter-spacing:.1em}
+.lb-item.sealed .ghost{filter:blur(3px);opacity:.35;user-select:none;
+  font-size:12px;line-height:1.8;white-space:pre-wrap;margin-top:4px;color:var(--ink-soft)}
+.lb-count{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--ink-soft);
+  text-align:right;margin-bottom:14px}
+
+/* 設定・導線 */
+.set-row{display:flex;align-items:center;justify-content:space-between;
+  padding:16px 4px;border-bottom:var(--line) solid var(--hair);font-size:13px;letter-spacing:.12em}
+.toggle{width:44px;height:24px;border:var(--line) solid var(--hair);border-radius:12px;position:relative;
+  background:rgba(255,255,255,.6);transition:border-color .25s}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;
+  background:var(--lav);transition:left .25s,background .25s}
+.toggle.on{border-color:var(--vio)}
+.toggle.on::after{left:23px;background:var(--vio)}
+.link-btn{display:block;width:100%;text-align:left;padding:16px 4px;font-size:13px;letter-spacing:.16em;
+  border-bottom:var(--line) solid var(--hair);color:var(--ink);text-decoration:none}
+.link-btn .arrow{float:right;color:var(--vio);font-family:var(--mono)}
+.link-btn.disabled{color:var(--ink-soft);pointer-events:none}
+.link-btn.disabled .arrow{color:var(--hair)}
+.danger{color:#8a5a74}
+
+/* 縦横・PC微調整 */
+@media (min-width:760px){
+  .t-logo{font-size:40px}
+  #ctrl .grp.left{opacity:.55}
+}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ===== v1.3: ガイド・完了・HUD記録カウンタ ===== */
+#hud-rec{margin-top:1px;color:var(--vio);letter-spacing:.2em}
+#btn-inspect.ready{animation:insPulse 1.6s ease-in-out infinite}
+@keyframes insPulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(123,108,224,.15)}
+  50%{box-shadow:0 0 0 3px rgba(123,108,224,.22)}
+}
+.guide-row{display:flex;gap:14px;align-items:flex-start;
+  padding:15px 4px;border-bottom:var(--line) solid var(--hair);
+  font-size:12.5px;line-height:1.8;letter-spacing:.06em;color:var(--ink)}
+.guide-row .g-k{flex:0 0 3.2em;font-size:11px;letter-spacing:.3em;color:var(--vio);
+  border:var(--line) solid var(--hair);text-align:center;padding:3px 0;margin-top:2px}
+#map-legend{position:absolute;top:8px;right:16px;font-size:9px;
+  letter-spacing:.18em;color:var(--ink-soft)}
+.cp-badge{margin:26px auto 0;width:max-content;padding:10px 26px;
+  border:var(--line) solid var(--vio);color:var(--vio);
+  font-size:14px;letter-spacing:.3em}
+.cp-line{margin-top:22px;text-align:center;font-size:13px;letter-spacing:.14em}
+.cp-sub{margin-top:10px;text-align:center;font-size:9px;letter-spacing:.22em;color:var(--ink-soft)}
