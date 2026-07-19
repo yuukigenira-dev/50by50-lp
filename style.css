@@ -514,6 +514,7 @@ a.news-text:hover { color: var(--logo-dark); }
   margin: 0 auto;
   max-width: 520px;
   line-height: 1.8;
+  white-space: pre-line; /* データ内の \n を改行として反映 */
 }
 .entry-cta { margin-top: 14px; }
 .entry-cta[aria-disabled="true"] {
