@@ -47,8 +47,11 @@ button{font-family:inherit;font-weight:300;color:var(--ink);background:none;bord
 .t-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.42em;color:var(--ink-soft);
   border-top:var(--line) solid var(--hair);border-bottom:var(--line) solid var(--hair);
   padding:5px 12px}
-.t-logo{margin-top:18px;font-size:30px;letter-spacing:.14em;font-weight:300;color:var(--navy);line-height:1.3}
-.t-logo b{font-weight:500;color:var(--vio)}
+.t-logo{margin-top:18px;line-height:1.3}
+.t-mark{display:block;width:min(150px,42vw);margin:0 auto}
+.t-name{display:block;margin-top:14px;
+  font-family:"Cormorant Garamond",serif;font-weight:500;
+  font-size:34px;letter-spacing:.14em;color:var(--navy)}
 .t-sub{font-size:11px;letter-spacing:.5em;color:var(--ink-soft);margin-top:2px;text-indent:.5em}
 .t-menu{margin-top:44px;display:flex;flex-direction:column;gap:10px;width:min(240px,72vw)}
 .t-btn{position:relative;padding:12px 10px;font-size:13px;letter-spacing:.32em;text-indent:.32em;
