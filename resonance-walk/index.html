@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>50by50 Resonance Walk -星儀社観測記録-</title>
+<meta name="description" content="御影泪／SHADEの観測記録を辿り、白と青紫の都市に残された残響ログを拾う探索アプリ。">
+<meta name="theme-color" content="#F7F7FA">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect width='16' height='16' fill='%23F7F7FA'/%3E%3Ccircle cx='8' cy='8' r='4' fill='none' stroke='%237B6CE0' stroke-width='1'/%3E%3Ccircle cx='8' cy='8' r='1.6' fill='%237B6CE0'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/rw.css">
+</head>
+<body>
+<div id="app">
+
+<!-- ========== タイトル ========== -->
+<section class="screen active" id="scr-title">
+  <div id="title-bg"></div>
+  <div id="title-inner">
+    <div class="t-eyebrow">OBSERVATION&nbsp;PLAYBACK</div>
+    <h1 class="t-logo">50<b>by</b>50<br>Resonance Walk</h1>
+    <div class="t-sub">-星儀社観測記録-</div>
+    <nav class="t-menu">
+      <button class="t-btn primary" id="btn-start">観測をはじめる</button>
+      <button class="t-btn" data-open="ov-logbook">ログ帳</button>
+      <button class="t-btn" data-open="ov-settings">設定</button>
+      <button class="t-btn" data-open="ov-links">導線</button>
+    </nav>
+  </div>
+  <div class="t-foot">50by50 — FIFTY&nbsp;BY&nbsp;FIFTY</div>
+</section>
+
+<!-- ========== 探索 ========== -->
+<section class="screen" id="scr-explore">
+  <div id="world">
+    <div class="p-layer" id="layer-bg"><div class="wash"></div><div class="tint"></div></div>
+    <div class="p-layer" id="layer-mid"></div>
+    <canvas id="stage"></canvas>
+    <div id="fx-dom"></div>
+  </div>
+
+  <header id="hud-top">
+    <div class="left">
+      <button class="icon-btn" id="btn-title" aria-label="タイトルへ">
+        <svg viewBox="0 0 16 16"><path d="M10 3 5 8l5 5"/></svg>
+      </button>
+      <span id="loc-name">──</span>
+    </div>
+    <div class="right">
+      <div id="hud-meta">
+        <div id="hud-obs">OBS.07&nbsp;/&nbsp;--:--</div>
+        <div class="sig" id="hud-sig">SIG<i></i><i></i><i></i><i></i></div>
+        <div id="hud-rec">REC&nbsp;0/5</div>
+      </div>
+      <button class="icon-btn" id="btn-logbook" aria-label="ログ帳">
+        <svg viewBox="0 0 16 16"><path d="M4 2h8v12H4zM6 5h4M6 8h4"/></svg>
+      </button>
+      <button class="icon-btn" id="btn-map" aria-label="マップ">
+        <svg viewBox="0 0 16 16"><circle cx="4" cy="11" r="1.4"/><circle cx="8" cy="4" r="1.4"/><circle cx="12" cy="10" r="1.4"/><path d="M5.2 10 7 5.3M9.2 5.1l2 3.8"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <div id="ctrl">
+    <div class="grp left">
+      <button class="mv-btn" id="btn-left"  aria-label="左へ">◀</button>
+      <button class="mv-btn" id="btn-right" aria-label="右へ">▶</button>
+    </div>
+    <div class="grp">
+      <button id="btn-inspect">調査</button>
+    </div>
+  </div>
+
+  <div id="log-card">
+    <div class="lc-head">
+      <span class="lc-title" id="lc-title">──</span>
+      <span class="lc-label" id="lc-label">──</span>
+    </div>
+    <div class="lc-body" id="lc-body"></div>
+    <button class="lc-close" id="lc-close">CLOSE</button>
+  </div>
+</section>
+
+<!-- ========== マップ ========== -->
+<div class="overlay" id="ov-map">
+  <div class="ov-head"><span class="ov-title">OBSERVATION&nbsp;MAP</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body" style="padding:0;position:relative">
+    <svg id="map-svg"></svg>
+    <div id="map-note"></div>
+    <div id="map-legend" class="mono">● 記録回収済み　○ 未回収</div>
+  </div>
+</div>
+
+<!-- ========== ログ帳 ========== -->
+<div class="overlay" id="ov-logbook">
+  <div class="ov-head"><span class="ov-title">LOG&nbsp;ARCHIVE&nbsp;／&nbsp;ログ帳</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body">
+    <div class="lb-count" id="lb-count"></div>
+    <div id="lb-list"></div>
+  </div>
+</div>
+
+<!-- ========== 設定 ========== -->
+<div class="overlay" id="ov-settings">
+  <div class="ov-head"><span class="ov-title">SETTINGS&nbsp;／&nbsp;設定</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body">
+    <div class="set-row"><span>効果音</span><button class="toggle on" id="tgl-se" aria-label="効果音"></button></div>
+    <div class="set-row"><span>BGM</span><button class="toggle on" id="tgl-bgm" aria-label="BGM"></button></div>
+    <div class="set-row"><span>観測手順</span><button class="ov-close" id="btn-guide-open">表示</button></div>
+    <div class="set-row"><span>観測記録の初期化</span><button class="ov-close danger" id="btn-reset">初期化</button></div>
+    <div class="set-row mono" style="font-size:10px;color:var(--ink-soft)">
+      <span>50by50 Resonance Walk&nbsp;v1.4&nbsp;SOUNDTRACK</span><span>Tier&nbsp;0–1</span>
+    </div>
+  </div>
+</div>
+
+<!-- ========== 導線 ========== -->
+<div class="overlay" id="ov-links">
+  <div class="ov-head"><span class="ov-title">LINKS&nbsp;／&nbsp;導線</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body" id="links-list"></div>
+</div>
+
+<!-- ========== 観測手順（遊び方） ========== -->
+<div class="overlay" id="ov-guide">
+  <div class="ov-head"><span class="ov-title">GUIDE&nbsp;／&nbsp;観測手順</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body">
+    <div class="guide-row"><span class="g-k">移動</span>
+      <span>行き先をタップ、または左下の◀▶。PCは ← → か A・D</span></div>
+    <div class="guide-row"><span class="g-k">調査</span>
+      <span>床の光輪に近づくと右下の「調査」が点灯。押すと記録を確認する。PCは E</span></div>
+    <div class="guide-row"><span class="g-k">記録</span>
+      <span>観測記録は全5件。回収状況は右上の REC 表示とログ帳で確認できる</span></div>
+    <div class="guide-row"><span class="g-k">解放</span>
+      <span>記録を集めると、星図マップ（右上）に新しい座標が開く</span></div>
+    <div class="guide-row"><span class="g-k">完了</span>
+      <span>全5件の回収で観測は完了する</span></div>
+    <button class="t-btn primary" id="btn-guide-start" style="margin:26px auto 0;display:block;width:min(240px,72vw)">観測をはじめる</button>
+  </div>
+</div>
+
+<!-- ========== 観測完了 ========== -->
+<div class="overlay" id="ov-complete">
+  <div class="ov-head"><span class="ov-title">OBSERVATION&nbsp;COMPLETE</span>
+    <button class="ov-close" data-close>閉じる</button></div>
+  <div class="ov-body">
+    <div class="cp-badge mono">RECORDS&nbsp;5&nbsp;/&nbsp;5</div>
+    <div class="cp-line">全記録の回収を確認。観測は完了した。</div>
+    <div class="cp-sub mono">50by50&nbsp;—&nbsp;OBSERVATION&nbsp;PLAYBACK&nbsp;／&nbsp;この先の記録は、各媒体に。</div>
+    <div id="complete-links" style="margin-top:18px"></div>
+  </div>
+</div>
+
+</div><!-- /#app -->
+
+<!-- 演出レイヤ -->
+<div id="fade"></div>
+<div id="wisteria"></div>
+<div id="phase-note">位相ノイズを検出</div>
+
+<script src="js/data.js"></script>
+<script src="js/audio.js"></script>
+<script src="js/sprite.js"></script>
+<script src="js/fx.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/ui.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
