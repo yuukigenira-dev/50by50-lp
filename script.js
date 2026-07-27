@@ -253,10 +253,10 @@
   if (!stage || !dots || !section) return;
 
   var ENTRIES = [
-    { no: "I", en: "READ", jp: "小説で世界に触れる", chip: "COMING SOON", live: false, art: "assets/images/entry-read.webp",
+    { no: "I", en: "READ", jp: "小説で世界に触れる", chip: "公開中", live: true, art: "assets/images/entry-read.webp",
       kicker: "I ── READ", title: "小説で世界に触れる",
-      desc: "第1巻(Episode 01–04)を Kindle Unlimited で近日公開。",
-      cta: "近日公開", href: null },
+      desc: "第1巻(Episode 01–04)を Kindle Unlimited で公開中。",
+      cta: "Kindleで読む", href: "https://www.amazon.co.jp/dp/B0H9XNYRBP" },
     { no: "II", en: "LISTEN", jp: "彼らの武器を、聴く。", chip: "公開中", live: true, art: "assets/images/entry-listen.webp",
       kicker: "II ── LISTEN", title: "彼らの武器を、聴く。",
       desc: "泪はバイオリンを奏で、薫は歌う——戦いの音、全19曲。",
